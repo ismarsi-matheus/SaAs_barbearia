@@ -13,7 +13,7 @@ app.get("/users", async (req, res) => {
     return res.status(500).send(error.message);
   }
 
-  res.status(200).json(users);
+  res.status(200).json(user);
 });
 
 app.get("/users/:id", async (req, res) => {
@@ -46,6 +46,17 @@ app.patch("/user/:id", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+app.delete("/user/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await UserModel.findByIdAndDelete(id);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 
 const port = 8080;
 
