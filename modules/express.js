@@ -1,28 +1,36 @@
 const express = require ('express')
+const UserModel = require('../src/models/user.models.js')
 
-const app = express()
+const app = express();
 
-app.get('/home',(req ,res)=>{
-    res.contentType("application/html")
-    res.status(200).send("<h1>Hello world</h1>");
-});
+app.use(express.json());
 
-app.get('/users',(req,res)=>{
-    const users = [
-      {
-        name: "John Doe",
-        email: "john@doe.com",
-      },
-      {
-        name: "jane Doe",
-        email: "jane@doe.com",
-      },
-    ];
+
+app.get('/users',async(req,res)=>{
+    try{
+      const users=await UserModel.find({}); 
+      res.status(200).json(users)
+    } catch(error){
+      return res.status(500).send(error.message)
+    };
 
     res.status(200).json(users);
 })
 
 
-const port= 8080
+
+app.post('/users', async (req,res)=>{
+  try{
+    const user = await UserModel.create(req.body);
+
+    res.status(201).json(user);
+
+  } catch(error){
+    res.status(500).send(error.message);
+  }
+})
+
+
+const port= 8080;
 
 app.listen(port,()=> console.log(`Rodando Com o Express na Porta ${port}! `));

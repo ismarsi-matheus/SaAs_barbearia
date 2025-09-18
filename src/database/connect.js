@@ -1,16 +1,14 @@
-const mongoose = require ('mongoose')
+const mongoose = require("mongoose");
 
-const connevtToDatabase= async()=>{
+const connectToDatabase = async () => {
+  try {
     await mongoose.connect(
-      'mongodb+srv://matheus_ismarsi_db_user:<db_password>@saasbarbearia.lu8gjza.mongodb.net/?retryWrites=true&w=majority&appName=SaasBarbearia',(error)=>{
-        if(error){
-            return console.log('Ocorreu um erro aose conectar ao banco de dados ',error)
-        }
-
-        return console.log('Conexão bem-sucedida')
-      }
+      `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@saasbarbearia.lu8gjza.mongodb.net/database?retryWrites=true&w=majority&appName=SaasBarbearia`
     );
-}
+    console.log("Conexão bem-sucedida");
+  } catch (error) {
+    console.log("Ocorreu um erro ao conectar ao banco de dados", error);
+  }
+};
 
-
-module.exports = connevtToDatabase
+module.exports = connectToDatabase;
